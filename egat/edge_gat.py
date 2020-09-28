@@ -40,8 +40,9 @@ class GATLayer(nn.Module):
         h = torch.sum(alpha * nodes.mailbox['z'], dim=1)
         return {'h': h}
 
-    def forward(self, g, nfeats):
+    def forward(self, g, nfeats, efeats):
         z = self.fc(nfeats)
+        g.edata['feats'] = efeats
         g.ndata['z'] = z
         #g.edata['feats'] = efeats
         g.apply_edges(self.edge_attention)
