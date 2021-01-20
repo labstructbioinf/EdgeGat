@@ -28,16 +28,18 @@ class GATLayer(nn.Module):
         nn.init.xavier_normal_(self.attn_fc_coef.weight, gain=gain)
 
     def edge_attention(self, edges):
+        #extract features
         src_data = edges.src['z']
         dst_data = edges.dst['z']
         feat_data = edges.data['feats']
+        #merge node_i - edge_ij - node_j features
         stacked = torch.cat([src_data, feat_data, dst_data], dim=1)
-        #print(stacked.shape, self.attn_fc_edge.weight.shape)
+        # apply FC and activation
         feat_data = self.attn_fc_edge(stacked)
         feat_data = F.leaky_relu(feat_data)
+        # FC to reduce edge_feats to scalar
         a = self.attn_fc_coef(feat_data)
-        a = F.leaky_relu(a)
-        return {'attn': F.leaky_relu(a), 'feats' : feat_data}
+        return {'attn': a, 'feats' : feat_data}
 
     def message_func(self, edges):
         return {'z': edges.src['z'], 'attn': edges.data['attn']}
@@ -47,8 +49,6 @@ class GATLayer(nn.Module):
             alpha = self.scaler(nodes.mailbox['attn'])
         else:
             alpha = F.softmax(nodes.mailbox['attn'], dim=1)
-        #alpha = 2*self.sigmoid(nodes.mailbox['e']) - 1
-        # equation (4)
         h = torch.sum(alpha * nodes.mailbox['z'], dim=1)
         return {'h': h}
 
@@ -56,7 +56,6 @@ class GATLayer(nn.Module):
         z = self.fc(nfeats)
         g.edata['feats'] = efeats
         g.ndata['z'] = z
-        #g.edata['feats'] = efeats
         g.apply_edges(self.edge_attention)
         g.update_all(message_func = self.message_func,
                      reduce_func = self.reduce_func)
@@ -71,11 +70,20 @@ class MultiHeadEGATLayer(nn.Module):
         * avoid high dimensionality of `out_dim_e` - increases computations time
         * edge features are returned in same form as nodes that is (Batch, num_heads, out_dim_e)
     params:
-        are same as in regular dgl.nn.pytorch.GATConv except:
+        most of them are same as in regular dgl.nn.pytorch.GATConv
             in_dim_e (int) number of input edge features
             out_dim_e (int) number of output edge features
+            in_dim_n (int) number of input node features
+            out_dim_n (int) number of output node features
+            num_heads (int) number of attention heads similar as number of 
+                convolution filters
+            activation (None, or torch activation eg: F.relu) default None
+                activation after concatenation
+            attention_scaler (str) `sigmoid` or `softmax` - tells how to scale attention
+                coefficients
+            
     returns:
-        (node_features, edge_features) (tuple of torch.Tensor's)
+        (node_features, edge_features) (tuple of torch.(cuda)FloatTensor's)
     '''
     def __init__(self,  in_dim_n, in_dim_e, out_dim_n, out_dim_e, num_heads, \
                  activation=None,attention_scaler='softmax', **kw_args):
@@ -95,8 +103,8 @@ class MultiHeadEGATLayer(nn.Module):
         nodes_stack = torch.cat(nodes_stack, dim=1)
         edges_stack = torch.cat(edges_stack, dim=1)
         if self.activation is not None:
-            nodes_stack =  F.leaky_relu(nodes_stack)
-            edges_stack = F.leaky_relu(edges_stack)
+            nodes_stack =  self.activation(nodes_stack)
+            edges_stack = self.activation(edges_stack)
         return nodes_stack, edges_stack
     
     
