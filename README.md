@@ -1,5 +1,6 @@
 # EdgeGat
-Graph Attention Layer with fully valuable edge features
+Graph Attention Layer with fully valuable edge features  \
+extension of GAT tutorial: https://docs.dgl.ai/tutorials/models/1_gnn/9_gat.html
 
 ## requirements
 
