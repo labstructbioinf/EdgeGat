@@ -22,7 +22,9 @@ class GATLayer(nn.Module):
             self.scaler = nn.Sigmoid()
 
     def reset_parameters(self):
-        """Reinitialize learnable parameters."""
+        """
+        Reinitialize learnable parameters.
+        """
         gain = nn.init.calculate_gain('relu')
         nn.init.xavier_normal_(self.attn_fc_edge.weight, gain=gain)
         nn.init.xavier_normal_(self.attn_fc_coef.weight, gain=gain)
@@ -75,8 +77,7 @@ class MultiHeadEGATLayer(nn.Module):
             out_dim_e (int) number of output edge features
             in_dim_n (int) number of input node features
             out_dim_n (int) number of output node features
-            num_heads (int) number of attention heads similar as number of 
-                convolution filters
+            num_heads (int) number of attention heads 
             activation (None, or torch activation eg: F.relu) default None
                 activation after concatenation
             attention_scaler (str) `sigmoid` or `softmax` - tells how to scale attention
@@ -107,12 +108,5 @@ class MultiHeadEGATLayer(nn.Module):
             edges_stack = self.activation(edges_stack)
         return nodes_stack, edges_stack
     
-    
-class GATStack(nn.Module):
-    def __init__(self, in_dim_n, in_dim_e, out_dim_n, out_dim_e, num_heads, \
-             activation=None, dropout_rate = 0.1, **kw_args):
-        super().__init__()
-        pass
-        
             
         
