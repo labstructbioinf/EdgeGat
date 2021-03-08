@@ -1,7 +1,7 @@
 # EdgeGat
-Graph Attention Layer with fully valuable edge features  \
-extension of GAT tutorial: https://docs.dgl.ai/tutorials/models/1_gnn/9_gat.html
-
+Reprository with Graph Attention Layer with fully valuable edge features  \
+extension of GAT tutorial: https://docs.dgl.ai/tutorials/models/1_gnn/9_gat.html  \
+use it as regular torch/dgl layer
 ## requirements
 
 ```
@@ -37,7 +37,7 @@ edge_features = th.rand((sample_graph.number_of_edges(), num_edge_feats))
 initialize egat layer
 
 ```python
-#use as regular torch/dgl layer work simillar as GATConv from dgl library
+#use as regular torch/dgl layer work similar as GATConv from dgl library
 egat = MultiHeadEGATLayer(in_dim_n=num_node_feats,
                           in_dim_e=num_edge_feats,
                           num_heads=num_attn_heads,
