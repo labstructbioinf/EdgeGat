@@ -1,7 +1,8 @@
 # EdgeGat
 Reprository with Graph Attention Layer with fully valuable edge features  \
 extension of GAT tutorial: https://docs.dgl.ai/tutorials/models/1_gnn/9_gat.html  \
-use it as regular torch/dgl layer
+use it as regular torch/dgl layer  \
+
 ## requirements
 
 ```
@@ -15,7 +16,6 @@ dgl   ==  0.5.3
 create graph
 ```python
 import dgl
-import networkx as nx #optionally for graph sample creation
 import torch as th
 from egat import MultiHeadEGATLayer
 
@@ -25,13 +25,13 @@ num_edge_feats = 20
 num_attn_heads = 1
 
 
-sample_contacts = th.rand((num_nodes, num_nodes)) #random distance matrix
-sample_adj = sample_contacts > 0.5 #binarize to adjecency matrix
-sample_nx = nx.Graph(sample_adj.cpu().numpy()) # convert to dgl.Graph object
-sample_graph = dgl.from_networkx(sample_nx)    
+contacts = th.rand((num_nodes, num_nodes)) #random distance matrix
+adj = contacts > 0.5 #binarize to obtain adjecency matrix
+u, v = th.nonzero(adj, as_tuple=True) #edges list
+graph = dgl.graph((u,v))    
 
-node_features = th.rand((num_nodes, num_node_feats)) 
-edge_features = th.rand((sample_graph.number_of_edges(), num_edge_feats))
+node_feats = th.rand((num_nodes, num_node_feats)) 
+edge_feats = th.rand((graph.number_of_edges(), num_edge_feats))
 ```
 
 initialize egat layer
