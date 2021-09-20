@@ -1,14 +1,14 @@
 # EdgeGat
 Reprository with Graph Attention Layer with fully valuable edge features  \
 extension of GAT tutorial: https://docs.dgl.ai/tutorials/models/1_gnn/9_gat.html  \
-use it as regular torch/dgl layer  \
+use it as regular dgl gnn layer 
 
 ## requirements
 
 ```
-python == 3.7
-torch ==  1.7.0
-dgl   ==  0.5.3
+python >= 3.6
+torch >=  1.7.0
+dgl   >=  0.5.3
 ```
 
 ## example use
@@ -48,5 +48,7 @@ egat = MultiHeadEGATLayer(in_dim_n=num_node_feats,
 
 forward pass
 ```python
-new_node_features, new_edge_features = egat(sample_graph, node_features, edge_features)
+new_node_feats, new_edge_feats = egat(graph, node_feats, edge_feats)
+#new_node_feats.shape = (num_heads, out_dim_n)
+#new_node_feats.shape = (num_heads, out_dim_e)
 ```
