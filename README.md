@@ -38,17 +38,17 @@ initialize egat layer
 
 ```python
 #use as regular torch/dgl layer work similar as GATConv from dgl library
-egat = MultiHeadEGATLayer(in_dim_n=num_node_feats,
-                          in_dim_e=num_edge_feats,
-                          num_heads=num_attn_heads,
-                          out_dim_e=10,
-                          out_dim_n=10,
+egat = MultiHeadEGATLayer(in_node_feats=num_node_feats,
+                          in_edge_feats=num_edge_feats,
+                          out_node_feats=10,
+                          out_edge_feats=10,
+                          num_heads=3,
                           activation=th.nn.functional.leaky_relu) #add activation if needed
 ```
 
 forward pass
 ```python
 new_node_feats, new_edge_feats = egat(graph, node_feats, edge_feats)
-#new_node_feats.shape = (num_heads, out_dim_n)
-#new_node_feats.shape = (num_heads, out_dim_e)
+#new_node_feats.shape = (*, num_heads, out_node_feats)
+#new_node_feats.shape = (*, num_heads, out_edge_feats)
 ```
