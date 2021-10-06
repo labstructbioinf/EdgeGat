@@ -48,5 +48,5 @@ forward pass
 ```python
 new_node_feats, new_edge_feats = egat(graph, node_feats, edge_feats)
 #new_node_feats.shape = (*, num_heads, out_node_feats)
-#new_node_feats.shape = (*, num_heads, out_edge_feats)
+#new_eode_feats.shape = (*, num_heads, out_edge_feats)
 ```
