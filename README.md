@@ -1,7 +1,5 @@
 # EdgeGat
-Reprository with Graph Attention Layer with fully valuable edge features  \
-extension of GAT tutorial: https://docs.dgl.ai/tutorials/models/1_gnn/9_gat.html  \
-use it as regular dgl gnn layer 
+Reprository with Graph Attention Layer with fully valuable edge features used in [Rosmmann-toolbox](https://pubmed.ncbi.nlm.nih.gov/34571541/) paper.
 
 ## requirements
 
@@ -11,7 +9,7 @@ torch >=  1.7.0
 dgl   >=  0.5.3
 ```
 
-## example use
+## example
 
 create graph
 ```python
