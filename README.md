@@ -15,7 +15,7 @@ create graph
 ```python
 import dgl
 import torch as th
-from egat import MultiHeadEGATLayer
+from egat import EGATConv
 
 num_nodes = 45 
 num_node_feats = 20
@@ -36,12 +36,12 @@ initialize egat layer
 
 ```python
 #use as regular torch/dgl layer work similar as GATConv from dgl library
-egat = MultiHeadEGATLayer(in_node_feats=num_node_feats,
-                          in_edge_feats=num_edge_feats,
-                          out_node_feats=10,
-                          out_edge_feats=10,
-                          num_heads=3,
-                          activation=th.nn.functional.leaky_relu) #add activation if needed
+egat = EGATConv(in_node_feats=num_node_feats,
+                in_edge_feats=num_edge_feats,
+                out_node_feats=10,
+                out_edge_feats=10,
+                num_heads=3,
+                activation=th.nn.functional.leaky_relu) #add activation if needed
 ```
 
 forward pass
