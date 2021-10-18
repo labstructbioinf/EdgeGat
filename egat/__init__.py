@@ -1,1 +1,1 @@
-from .edge_gat_learnable import MultiHeadEGATLayer
+from .edge_gat_learnable import EGATConv
