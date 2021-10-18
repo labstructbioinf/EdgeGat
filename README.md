@@ -1,6 +1,6 @@
 # EdgeGat
 Reprository with Graph Attention Layer with fully valuable edge features used in [Rosmmann-toolbox](https://pubmed.ncbi.nlm.nih.gov/34571541/) paper.
-![Example1](egat_schema.png)
+![Example1](egat_schema.png){ width=50% }
 ## requirements
 
 ```
