@@ -1,6 +1,6 @@
 # EdgeGat
 Reprository with Graph Attention Layer with fully valuable edge features used in [Rosmmann-toolbox](https://pubmed.ncbi.nlm.nih.gov/34571541/) paper.
-
+![Example1](egat_schema.png)
 ## requirements
 
 ```
@@ -18,10 +18,8 @@ import torch as th
 from egat import EGATConv
 
 num_nodes = 45 
-num_node_feats = 20
-num_edge_feats = 20
+num_node_feats, num_edge_feats = 20, 20
 num_attn_heads = 1
-
 
 contacts = th.rand((num_nodes, num_nodes)) #random distance matrix
 adj = contacts > 0.5 #binarize to obtain adjecency matrix
@@ -40,8 +38,7 @@ egat = EGATConv(in_node_feats=num_node_feats,
                 in_edge_feats=num_edge_feats,
                 out_node_feats=10,
                 out_edge_feats=10,
-                num_heads=3,
-                activation=th.nn.functional.leaky_relu) #add activation if needed
+                num_heads=3)
 ```
 
 forward pass
